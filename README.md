@@ -39,3 +39,16 @@ Ketika diminta menambahkan fitur **History Logger**, SRP sangat membantu karena:
 5. **Kode lebih mudah dibaca** — Saat mencari bug di riwayat, kami tahu pasti harus melihat ke `CounterController` untuk masalah data, atau `CounterView` untuk masalah tampilan.
 
 Tanpa SRP, semua kode akan tercampur di satu file, dan menambah fitur baru akan jauh lebih berisiko dan membingungkan.
+
+---
+
+## Lesson Learnt (Refleksi Akhir)
+
+### 1. 💡 Konsep Baru
+Baru memahami bahwa tanda underscore (`_`) di Dart bukan sekadar penamaan, tapi benar-benar membuat variabel menjadi **private** (hanya bisa diakses di dalam file yang sama). Ini adalah cara Dart menerapkan **Enkapsulasi** — salah satu pilar OOP. Contohnya `_counter`, `_step`, dan `_history` di `CounterController` tidak bisa diakses langsung dari `CounterView`, harus lewat getter/setter.
+
+### 2. 🏆 Kemenangan Kecil
+Berhasil memisahkan kode menjadi **Controller** dan **View** sesuai prinsip SRP, lalu menambahkan fitur History Logger **tanpa merusak fitur yang sudah ada**. Juga berhasil membuat commit terpisah per task (`Task 1` → `Task 2` → `Homework`) sehingga riwayat perubahan di Git rapi dan mudah dilacak.
+
+### 3. 🎯 Target Berikutnya
+Ingin belajar lebih dalam tentang **state management** yang lebih canggih (seperti `Provider` atau `Riverpod`) agar tidak hanya mengandalkan `setState()`. Juga ingin mengeksplorasi cara membuat tampilan UI yang lebih menarik dengan animasi dan tema kustom di modul berikutnya.
