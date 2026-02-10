@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # logbook_app_001
 
 A new Flutter project — Counter App dengan prinsip **Single Responsibility Principle (SRP)**.
@@ -20,3 +21,6 @@ This project is a starting point for a Flutter application.
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# -PY4_2C_D3_2024-_Modul1_092
+>>>>>>> 93afa2e08ae10eaeb55775a79cbf0ef8c32277b7
