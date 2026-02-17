@@ -3,6 +3,7 @@ import 'dart:convert';
 
 class CounterController {
   int _counter = 0; // Variabel private (Enkapsulasi)
+  String _username = ''; // Username untuk per-user storage
 
   int get value => _counter; // Getter untuk akses data
 
@@ -23,9 +24,9 @@ class CounterController {
   // Getter: full history untuk keperluan penyimpanan
   List<Map<String, String>> get fullHistory => List.from(_history);
 
-  // Keys untuk SharedPreferences
-  static const String _keyCounter = 'counter_value';
-  static const String _keyHistory = 'counter_history';
+  // Keys untuk SharedPreferences (per-user)
+  String _getCounterKey() => 'counter_$_username';
+  String _getHistoryKey() => 'history_$_username';
 
   String _timestamp() {
     final now = DateTime.now();
@@ -34,22 +35,27 @@ class CounterController {
 
   // === PERSISTENCE METHODS ===
 
+  /// Set username untuk storage keys
+  void setUsername(String username) {
+    _username = username;
+  }
+
   /// Load counter value dari SharedPreferences
   Future<void> loadCounter() async {
     final prefs = await SharedPreferences.getInstance();
-    _counter = prefs.getInt(_keyCounter) ?? 0;
+    _counter = prefs.getInt(_getCounterKey()) ?? 0;
   }
 
   /// Save counter value ke SharedPreferences
   Future<void> saveCounter() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_keyCounter, _counter);
+    await prefs.setInt(_getCounterKey(), _counter);
   }
 
   /// Load history dari SharedPreferences
   Future<void> loadHistory() async {
     final prefs = await SharedPreferences.getInstance();
-    final String? historyJson = prefs.getString(_keyHistory);
+    final String? historyJson = prefs.getString(_getHistoryKey());
 
     if (historyJson != null) {
       try {
@@ -69,7 +75,7 @@ class CounterController {
   Future<void> saveHistory() async {
     final prefs = await SharedPreferences.getInstance();
     final String historyJson = jsonEncode(_history);
-    await prefs.setString(_keyHistory, historyJson);
+    await prefs.setString(_getHistoryKey(), historyJson);
   }
 
   /// Load semua data (counter + history)
@@ -128,7 +134,7 @@ class CounterController {
     _history.clear();
 
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_keyCounter);
-    await prefs.remove(_keyHistory);
+    await prefs.remove(_getCounterKey());
+    await prefs.remove(_getHistoryKey());
   }
 }

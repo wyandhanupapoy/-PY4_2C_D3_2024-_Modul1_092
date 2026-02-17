@@ -6,7 +6,7 @@ class CounterView extends StatefulWidget {
   // Tambahkan variabel final untuk menampung nama
   final String username;
 
-  // Update Constructor agar mewajibkan (required) kiriman nama
+  // Update Constructor agar mew ajibkan (required) kiriman nama
   const CounterView({super.key, required this.username});
 
   @override
@@ -25,10 +25,27 @@ class _CounterViewState extends State<CounterView> {
 
   // Load data dari SharedPreferences saat aplikasi dibuka
   Future<void> _loadData() async {
+    // Set username SEBELUM load data
+    _controller.setUsername(widget.username);
     await _controller.loadAll();
     setState(() {
       _isLoading = false;
     });
+  }
+
+  // Fungsi untuk mendapatkan greeting berdasarkan waktu
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+
+    if (hour >= 6 && hour < 11) {
+      return "Selamat Pagi";
+    } else if (hour >= 11 && hour < 15) {
+      return "Selamat Siang";
+    } else if (hour >= 15 && hour < 18) {
+      return "Selamat Sore";
+    } else {
+      return "Selamat Malam";
+    }
   }
 
   Future<void> _handleIncrement() async {
@@ -122,10 +139,60 @@ class _CounterViewState extends State<CounterView> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Welcome Message
-            Text(
-              "Selamat Datang, ${widget.username}!",
-              style: Theme.of(context).textTheme.headlineSmall,
+            // Time-Based Welcome Banner
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.primaryContainer,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _getGreeting(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    widget.username,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Selamat beraktivitas! 🎉",
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.9),
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 20),
 
